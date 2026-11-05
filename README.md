@@ -67,6 +67,13 @@ cargo test  --all-targets --verbose
 The crate uses `tempfile` for configuration tests; add new cases alongside the
 modules they exercise and keep panics out of production paths.
 
+## Dev Container
+
+Open the repository in a development container using VS Code with the
+Dev Containers extension or GitHub Codespaces. The container includes the Rust
+toolchain and the ZeroMQ development libraries needed to build and test the
+broker.
+
 ## Deploying with systemd
 
 The repository includes `pushkind-broker.service` as a starting point. Customize
