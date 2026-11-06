@@ -5,11 +5,11 @@ edition = "2024"
 
 [dependencies]
 zmq = "0.10.0"
-serde = { version = "1.0.228", features = ["derive"] }
-thiserror = "2.0.18"
-log = "0.4.29"
-env_logger = "0.11.10"
-config = { version = "0.15.22", default-features = false, features = ["yaml"] }
+serde = { version = "1.0.229", features = ["derive"] }
+thiserror = "2.0.21"
+log = "0.4.35"
+env_logger = "0.11.11"
+config = { version = "0.15.27", default-features = false, features = ["yaml"] }
 
 [dev-dependencies]
 tempfile = "3.27.0"

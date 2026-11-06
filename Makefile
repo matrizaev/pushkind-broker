@@ -1,3 +1,6 @@
+.PHONY: check
+.DEFAULT_GOAL := check
+
 check:
 	cargo fmt --all
 	cargo clippy --all-features --tests -- -Dwarnings

@@ -11,6 +11,8 @@ use thiserror::Error;
 enum BrokerError {
     #[error(transparent)]
     Config(#[from] config::ConfigError),
+    #[error("runtime error")]
+    Runtime,
 }
 
 fn main() -> Result<(), BrokerError> {
@@ -31,14 +33,24 @@ fn main() -> Result<(), BrokerError> {
         );
         let handle_label = label.clone();
         handles.push(thread::spawn(move || {
-            if let Err(e) = run_pair(&handle_label, pair) {
+            let result = run_pair(&handle_label, pair);
+            if let Err(e) = &result {
                 error!("[{handle_label}] error: {e}");
             }
+            result
         }));
     }
 
-    for h in handles {
-        let _ = h.join();
+    let errors: Vec<_> = handles
+        .into_iter()
+        .filter_map(|h| match h.join() {
+            Ok(Ok(())) => None,
+            Ok(Err(_)) | Err(_) => Some(()),
+        })
+        .collect();
+    if !errors.is_empty() {
+        Err(BrokerError::Runtime)
+    } else {
+        Ok(())
     }
-    Ok(())
 }
