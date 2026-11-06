@@ -41,7 +41,13 @@ fn main() -> Result<(), BrokerError> {
         }));
     }
 
-    let errors: Vec<_> = handles.into_iter().filter_map(|h| h.join().err()).collect();
+    let errors: Vec<_> = handles
+        .into_iter()
+        .filter_map(|h| match h.join() {
+            Ok(Ok(())) => None,
+            Ok(Err(_)) | Err(_) => Some(()),
+        })
+        .collect();
     if !errors.is_empty() {
         Err(BrokerError::Runtime)
     } else {
